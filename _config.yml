@@ -1,0 +1,19 @@
+title: Hamiltonian Mechanics & Data Science
+description: This is mini-website of a project that I am working on that deals with topics in data science from the point of view of Hamiltonian mechanics. 
+show_downloads: true
+google_analytics:
+#theme: minima
+theme: jekyll-theme-minimal
+markdown: kramdown
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+
+# This will require each of these plugins automatically.
+plugins: ['jekyll-scholar']
+
+scholar:
+    sort_by: year
+    order: descending
