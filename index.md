@@ -92,8 +92,8 @@ with $(x_i, p_i)$ chosen as the initial condition. Here we choose the function $
 $$
 \begin{aligned}
 f(x,p) = \begin{cases}
-\left\| (\frac{\partial H}{\partial p})^2 + (\frac{\partial H}{\partial x})^2 \right\|^{-2} & \quad \text{if} \quad H(x,p) \neq H_r \\
-\left\|(\frac{\partial H}{\partial p})^2 + (\frac{\partial H}{\partial x})^2  \right\|^{-1/2} & \quad \text{if} \quad H(x,p) = H_r \\
+\left\| \left(\frac{\partial H}{\partial p})\right^2 + \left(\frac{\partial H}{\partial x})\right^2 \right\|^{-2} & \quad \text{if} \quad H(x,p) \neq H_r \\
+\left\| \left(\frac{\partial H}{\partial p})\right^2 + \left(\frac{\partial H}{\partial x})\right^2  \right\|^{-1/2} & \quad \text{if} \quad H(x,p) = H_r \\
 \end{cases}
 \end{aligned}
 $$
@@ -147,16 +147,16 @@ One possible solution to such problem was proposed by Jaeger as Echo State Netwo
 ## Mathematical Description
 Since the network's states depend on time, the reservoir is in essence a complex dynamical system. Moreover, the state of the reservoir, $r$, depends not only on the state of the previous time-step, but also on an external input. Mathematically, the state, $r$, is an $N$ dimensional vector with each element $r_i$ is the state of the $i^{th}$ reservoir node. 
 
-The external input, $u$ represented by an $M$ dimensional vector, is coupled to the reservoir by an $N\times M$ matrix $W_{in}$,  which does not have to be time-dependant. The discrete-time dynamical system is described by
+The external input, $u$ represented by an $M$ dimensional vector, is coupled to the reservoir by an $N\times M$ matrix $\mathbf{W}_i$,  which does not have to be time-dependant. The discrete-time dynamical system is described by
 
 $$
 \begin{aligned}
-\mathbf{r}(t + \Delta t) &= (1 - \alpha)\mathbf{r}(t) + \alpha \mathrm{tanh} \left( \mathbf{A} \mathbf{r}(t) + \mathbf{W}_{in} \mathbf{u}(t)  \right) \\
-\mathbf{v}(t + \Delta t) &= \mathbf{W}_{out} \left( \mathbf{r}(t + \Delta t), \mathbf{P} \right).
+\mathbf{r}(t + \Delta t) &= (1 - \alpha)\mathbf{r}(t) + \alpha \mathrm{tanh} \left( \mathbf{A} \mathbf{r}(t) + \mathbf{W}_i \mathbf{u}(t)  \right) \\
+\mathbf{v}(t + \Delta t) &= \mathbf{W}_o \left( \mathbf{r}(t + \Delta t), \mathbf{P} \right).
 \end{aligned}
 $$
 
-The matrix $A$ was alluded to earlier and it is the adjacency matrix, which describes the connection amongst reservoir nodes. The matrix $A$ is a square $N \times N$ symmetric matrix. The $M_1$ dimensional vector $v$ is the output vector and the matrix $W_{out}$ is a  $M_1 \times N$ matrix that maps $N$ dimensional reservoir states and maps them to the output. In other words, each output element is a combination of reservoir states. (It depends on $P$, which we can adjust).
+The matrix $A$ was alluded to earlier and it is the adjacency matrix, which describes the connection amongst reservoir nodes. The matrix $A$ is a square $N \times N$ symmetric matrix. The $M_1$ dimensional vector $v$ is the output vector and the matrix $\mathbf{W}_o$ is a  $M_1 \times N$ matrix that maps $N$ dimensional reservoir states and maps them to the output. In other words, each output element is a combination of reservoir states. (It depends on $P$, which we can adjust).
 
 The scalar $\alpha$ is the leaking rate, that ranges between $(0, 1]$ and its job here is to control the speed at which the reservoir state is updated. 
 
@@ -181,11 +181,11 @@ On the other hand, RNN can have very large gradients, which, depending on the er
 
 These problems motivated the introduction of ESN, as it can avoid back-propagation altogether, thanks to the fact that the weights of the input layer and the hidden-to-hidden connections are chosen randomly and fixed.  Hence we are left with the weights of the reservoir to the output layer, and as a result,  the training turns into a regression problem, which can be solved analytically allowing for a one-shot training. 
 
-For this architecture, the training is a supervised learning problem, where we seek to make the output $v(t)$, such that it approximates $V_d(t)$ when fed the input signal $u(t)$. Training is done by feeding the ESN an input signal and computing the value of the reservoir state, using dynamical system. From there, the output $v$ is computed using the reservoir-to-output map $W_{out} (r, P)$. Then the task is to find a parameter $P$ such that the error functional 
+For this architecture, the training is a supervised learning problem, where we seek to make the output $v(t)$, such that it approximates $V_d(t)$ when fed the input signal $u(t)$. Training is done by feeding the ESN an input signal and computing the value of the reservoir state, using dynamical system. From there, the output $v$ is computed using the reservoir-to-output map $\mathbf{W}_o (r, P)$. Then the task is to find a parameter $P$ such that the error functional
 
 $$
 \begin{aligned}
-J(v) = \sum_{t=-T}^0 \| W_{out}(r, P) - v_d(t) \|^2 + \beta \| P \|^2
+J(v) = \sum_{t=-T}^0 \| \mathbf{W}_o(r, P) - v_d(t) \|^2 + \beta \| P \|^2
 \end{aligned}
 $$
 
@@ -195,15 +195,15 @@ The regression problem can be written in matrix form as
 
 $$
 \begin{aligned}
-J(v) = (W_{out} X - V_d)^2 + \beta \|W_{out} \|^2
+J(v) = (\mathbf{W}_o X - V_d)^2 + \beta \|\mathbf{W}_o \|^2
 \end{aligned}
 $$
 
-where $X$ is a $(1 + M + N) \times N_t$ matrix and $V_d$ is a $M_1 \times T$ matrix. To find $W_{out}$ that yields the local minimum for $J$, we use the key fact from calculus that a function is at the local extremum when the gradient vanishes. Hence, we take the derivative of $J$ with respect to$ W_{out} $and set it equal to zero and in doing so, we obtain an expression for $W_{out}$ given by
+where $X$ is a $(1 + M + N) \times N_t$ matrix and $V_d$ is a $M_1 \times T$ matrix. To find $\mathbf{W}_o$ that yields the local minimum for $J$, we use the key fact from calculus that a function is at the local extremum when the gradient vanishes. Hence, we take the derivative of $J$ with respect to$ \mathbf{W}_o $and set it equal to zero and in doing so, we obtain an expression for $\mathbf{W}_o$ given by
 
 $$
 \begin{aligned}
-W_{out} = (Y)X (X X^T + \beta I)^{-1},
+\mathbf{W}_o = (Y)X (X X^T + \beta I)^{-1},
 \end{aligned}
 $$
 
@@ -211,11 +211,11 @@ Here we can clearly see the role the parameter $\beta$ plays. In its absence, al
 
 <div id='param'/> 
 ### Parameter Tuning
-In this section, we discuss the role of an echo state network's parameter on its behaviour. As mentioned previously, the parameters of the ESN are: size of the reservoir, the sparsity of the adjacency matrix $A$, the spectral radius of $A$, denoted by $ \rho$, leaking rate and the scaling of $W_{in}$. 
+In this section, we discuss the role of an echo state network's parameter on its behaviour. As mentioned previously, the parameters of the ESN are: size of the reservoir, the sparsity of the adjacency matrix $A$, the spectral radius of $A$, denoted by $ \rho$, leaking rate and the scaling of $\mathbf{W}_i$. 
 
 The size of the reservoir plays an important role in influencing performance of ESN. Due to its computational simplicity compared to other architectures, the reservoir size can be chosen to be very large. One advantage of using a large reservoir size is that it reduces the difficulty of finding a combination of reservoir outputs that approximates the desired signal. There is no exact science in finding the perfect size, however, one must choose a size that is at least bigger than the length (number of time steps) of the input that needs to be kept in memory. Another strategy is to tune a small ESN network and then increase the size of the reservoir.
 
-Another parameter that can be tuned is the sparsity of matrices $W_{in}$ and $A$. What is meant by sparsity is the amount of zero elements in the matrix. A very sparse matrix has a very small percentage non-zero elements to total number of elements. This particular parameter does affect the performance of the network, as it makes information stay in one part of the reservoir without it propagating to other parts. As it is sparse, there are many options to choose in terms of distribution of non-zero elements. For example, a symmetric shape based on Erdős–Rényi model is the one chosen for part III of this series. 
+Another parameter that can be tuned is the sparsity of matrices $A$ and $\mathbf{W}_i$. A sparse matrix has a very small percentage non-zero elements to total number of elements. This particular parameter does affect the performance of the network, as it makes information stay in one part of the reservoir without it propagating to other parts. As it is sparse, there are many options to choose in terms of distribution of non-zero elements. For example, a symmetric shape based on Erdős–Rényi model is the one chosen for part III of this series. 
 
 One of the most performances affecting parameters is the spectral radius, $ \rho$, of the adjacency matrix $A$. The spectral radius is the absolute value of the largest eigenvalue of the matrix $A$. This parameter is an indicator of the network having the so-called **echo state property**. This property indicates whether the asymptotic state of the system would echo the inputs.  It was shown that having a spectral radius of less than unity, in some cases, guarantees echo state property. However, such is , and was that a can an state property with a spectral radius larger than one. Nonetheless, a very good strategy is to start with a spectral radius set to unity and then tune it. Also, the nature of the problem dictates the value of the spectral radius, where it is advised to use a $ \rho > 1$ for problems that require memory of the input and vice-versa.
 
@@ -253,11 +253,11 @@ The most famous chaotic system is the Lorenz 63 system, whose trajectories, when
 |:--:| 
 | *Trajectory of the Lorenz 63 system* |
 
-In weather modelling, one of the models used for convection is the Navier-Stokes equation, which model fluids, with the heat is coupled to according to the Boussinesq approximation which treats the change in temperature as a small forcing term to the Navier-Stokes equation. When the fluid is heated from below and cooled at the top layer, the fluid starts to move in a periodic fashion, creating the Rayleigh-Bénard convection, which is an instability that results in fluid circulating as the following Gif shows. 
+In weather modelling, one of the models used for convection is the Navier-Stokes equation, which model fluids, with the heat is coupled to according to the Boussinesq approximation which treats the change in temperature as a small forcing term to the Navier-Stokes equation. When the fluid is heated from below and cooled at the top layer, the fluid starts to move in a periodic fashion, creating the Rayleigh-Bénard convection, which is an instability that results in fluid circulating as the following animation shows. 
 
-| ![](Rb.gif) | 
+| ![](Rb_2.gif) | 
 |:--:| 
-| *The amplitude of the velocity of fluid going through Rayleigh-Bénard convection* |
+| *The amplitude of the velocity (left) and temperature (right) of fluid going through Rayleigh-Bénard convection* |
 
 Edward Lorenz noticed, by accident, when he was studying the solution of the Boussinesq approximation that the periodic solution changes drastically when the initial conditions are perturbed. This lead Lorenz to derive a simpler model from the Boussinesq equation, by describing the solution of the Navier-Stokes in terms Fourier coefficients. If this is the first time that you've encountered the term Fourier coefficients, don't worry. One way to look at it is when a applying Fourier transformation, the solution of the system is represented in terms of frequencies (or modes). The Fourier coefficients correspond to the amplitudes of those frequencies. The result of the approximation is the celebrated Lorenz model, described by the following system of differential equations
 
@@ -337,7 +337,7 @@ If you're curious to see what is going on with is an equation, you can take the 
 
 One of the most interesting features of this system is that when $t \to \infty$ the solution, from any initial condition, is attracted to a space known as the \textbf{inertial manifold}. What's interesting about the inertial manifold is that it is finite dimensional, which tells us that the solution of the KS as $t \to \infty$ is equivalent to that of a finite dimensional system. 
 
-For our prediction, the KS equation is discretised in space as, the solution is now a vector in $R^N$ where we chose $N = 128$ and (parameters)
+For our prediction, the KS equation is discretised in space as, the solution is now a vector in $\mathbb{R}^N$ where we chose $N = 128$ and (parameters)
 
 | ![](KS_predict06.png) | 
 |:--:| 
