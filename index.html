@@ -15,7 +15,7 @@
 <meta property="og:url" content="http://localhost:4000/" />
 <meta property="og:site_name" content="Data Science &amp; Some Mechanics" />
 <script type="application/ld+json">
-{"@type":"WebSite","url":"http://localhost:4000/","headline":"Data Science &amp; Some Mechanics","name":"Data Science &amp; Some Mechanics","description":"This is mini-website of a project that I am working on that deals with topics in data science from the point of view of dynamical systems.","@context":"http://schema.org"}</script>
+{"description":"This is mini-website of a project that I am working on that deals with topics in data science from the point of view of dynamical systems.","name":"Data Science &amp; Some Mechanics","@type":"WebSite","url":"http://localhost:4000/","headline":"Data Science &amp; Some Mechanics","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -101,23 +101,23 @@
 <div id="HamClustering" />
 
 <h1 id="hamiltonian-methods-for-data-clustering">Hamiltonian Methods for Data Clustering</h1>
-<p>Imagine you finally land a data science job, and it entails checking, labelling and classifying every new datum added to the dataset manually. Such a job would be a dull and tedious job! Furthermore, with the volume of data being harvested today amounts exceeded the volume of water in the Atlantic Ocean. It would be impossible to complete by one person, let alone with an army of data scientists. The solution? You might have heard of data clustering. It is an automated process of grouping data and sorting them into groups and clusters.</p>
+<p>Imagine you finally land a data science job, and it entails checking, labelling and classifying every new datum added to the dataset manually. Such a job would be a dull and tedious one! Furthermore, with the volume of data being harvested today exceeds the volume of water in the Atlantic Ocean, it would be impossible to complete by one person, let alone with an army of data scientists. The solution? You might have heard of data clustering. It is an automated process of grouping data and sorting them into groups and clusters.</p>
 
-<p>A cluster can be thought of as a collection of data, that share a number of similarities with each other and they are dissimilar to objects in other clusters. In this article explains, in a simplified way, a type of clustering algorithm that relies on Hamiltonian dynamics. In the next section, I will present a very simplified explanation of what I mean by Hamiltonian dynamics and the underlying idea behind this type of clustering. The idea of using Hamiltonian dynamics for data clustering was presented in <a href="#casagrande2012hamiltonian">(Casagrande, Sassano, &amp; Astolfi, 2012)</a>.</p>
+<p>A cluster can be thought of as a collection of data, that share a number of similarities with each other and they are dissimilar to objects in other clusters. In this article I will review, in a simplified way, a type of clustering algorithm that relies on Hamiltonian dynamics. The idea of using Hamiltonian dynamics for data clustering was presented in <a href="#casagrande2012hamiltonian">(Casagrande, Sassano, &amp; Astolfi, 2012)</a>. In the next section, I will give a very simplified explanation of Hamiltonian dynamics and the underlying idea behind this type of clustering.</p>
 
-<p>Many clustering algorithms are based on the idea of Euclidean distance, whereas here the idea is to use level curves to define the cluster’s boundary. Coincidentally, these boundaries are the solution to a Hamiltonian system. To illustrate that, consider the problem of sorting houses into their respective neighbourhoods. A distance based algorithms would identify the said house’s neighbourhood by finding the average distance between it and the other houses in the neighbourhood. A level set approach is akin to defining neighbourhoods by surrounding streets and test whether the house is inside the neighbourhood’s street circuit or not.</p>
+<p>Many clustering algorithms are based on the idea of Euclidean distance, whereas here, the algorithm is based on the idea of level curves to define the cluster’s boundary. Coincidentally, these boundaries are the solution to a Hamiltonian system. To illustrate that, consider the problem of sorting houses into their respective neighbourhoods. A distance-based algorithms would identify the said house’s neighbourhood by finding the average distance between it and the other houses in the neighbourhood. A level set approach is akin to defining neighbourhoods by surrounding streets and test whether the house is inside the neighbourhood’s dividing streets or not.</p>
 
-<p>The most significant advantage of this method is we do not need to know the number of clusters a priori, unlike other clustering algorithms. Not only that, the geometric nature of the algorithm and Hamiltonian dynamics allow us to profit from other geometric information, like geometric moments to classify and clusters and even model time-varying clusters. Sadly, dealing with dynamic clusters will be untreated in this article. Another advantage is we can perform clustering on the surface of geometric objects, such as the sphere, without resorting to additional data preprocessing or transformation.</p>
+<p>The most significant advantage of this method is that we do not need to know the number of clusters a priori, unlike the K-means algorithm. Not only that, the geometric nature of the algorithm and Hamiltonian dynamics allow us to profit from other geometric information, like geometric moments to classify and clusters and even model time-varying clusters. Sadly, dealing with dynamic clusters will be untreated in this article. Another advantage is we can perform clustering on the surface of geometric objects, such as the sphere, without resorting to additional data preprocessing or transformation.</p>
 
 <div id="HamMech" />
 
 <h2 id="hamiltonian-mechanics">Hamiltonian Mechanics</h2>
 
-<p>First, what is meant by Hamiltonian dynamics? To answer we need to go back to Newtonian dynamics. From high-school physics class, we know that Newton’s second law states that the force is proportional to mass times the acceleration and that the Newton’s third law states that force need to be in balance. From these two laws we can derive the equations of motion.</p>
+<p>First, what do we mean when we say Hamiltonian dynamics? To answer that we need to go back to Newtonian dynamics. From high-school physics, we know that Newton’s second law states that the force is proportional to mass times the acceleration and that the Newton’s third law states that force need to be in balance. From these two laws we can derive the equations of motion.</p>
 
 <p>If we consider a particle, (or a many particles), with a  mass $m$,(or a group of $N$ particles) that move along a trajectory $x(t)$, then according to Newton’s second law, when an external force $F$ is applied, the equation of motion is then</p>
 
-<script type="math/tex; mode=display">\ddot{x}(t) = \frac{1}{m}F</script>
+<script type="math/tex; mode=display">\ddot{x}(t) = \frac{F}{m}</script>
 
 <p>This describes how the acceleration changes with time. Also, the trajectory here is described in terms of Cartesian coordinates. Newtonian description of dynamics depends greatly on the coordinate systems used and when attempting to model systems with geometric constraints, like a pendulum on a sphere, it becomes very messy. Furthermore, when we want to study the symmetries of a mechanical system, such description becomes a burden. You might wonder, why do we care about symmetries? They correspond to the system’s conserved quantities and are used to simplify the equations of motion. The solution the shortcomings of Newtonian mechanics is to use a different formulation that would take into consideration constraints and symmetries.</p>
 
@@ -131,7 +131,7 @@
 
 <p>which is equivalent Newton’s equation. The derivation of this equation is beyond the scope of this article, but the curious reader can consult one of the following books for a detailed and rigorous exposition <a href="#arnol2013mathematical">(Arnol’d, 2013)</a> or <a href="#abraham1978foundations">(Abraham, Marsden, &amp; Marsden, 1978)</a></p>
 
-<p>At this point, we need the position and velocity $(x(t), \dot{x}(t))$ to evaluate the Lagrangian. Instead of the velocity, we use momentum, and we write the Lagrangian as $L = p \cdot \dot{x} - H(x, p)$, where $H$ is the <strong>Hamiltonia</strong>. In Hamiltonian formulation, the trajectory solves Hamilton’s equation</p>
+<p>At this point, we need the position and velocity $(x(t), \dot{x}(t))$ to evaluate the Lagrangian. Instead of the velocity, we use momentum, and we write the Lagrangian as $L = p \cdot \dot{x} - H(x, p)$, where $H$ is the <strong>Hamiltonian</strong>. In Hamiltonian formulation, the trajectory solves Hamilton’s equation</p>
 
 <script type="math/tex; mode=display">\dot{x}(t) = -\frac{\partial H}{\partial p}, \quad \dot{p}(t) = \frac{\partial H}{\partial x}</script>
 
@@ -143,7 +143,7 @@
 <h3 id="1st-step">$1^{st}$ Step</h3>
 <p>The first thing we do is to define the Hamiltonian function $H$ as</p>
 
-<script type="math/tex; mode=display">H(x, p) = \sum\limits_{i=1}^N \mathrm{exp}(-\| x - x_k \|^2 - a\| p - p_k \|^2)</script>
+<script type="math/tex; mode=display">H(x, p) = \sum\limits_{i=1}^N \mathrm{exp}(-\| x - x_k \|^2 - \| p - p_k \|^2)</script>
 
 <p>where $(x_k, p_k)$ for $k=1, \dots, N$ are our collected data points. Let us denote the set of collected data be denoted by $\mathcal{P}$. One can choose different Hamiltonians, but here we stick with a Gaussian function, because we can view it as probability density function with $N$ modes located at $(x_k, p_k)$.</p>
 
@@ -164,21 +164,21 @@
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{aligned}
 f(x,p) = \begin{cases}
-\left\| \left(\frac{\partial H}{\partial p})\right^2 + \left(\frac{\partial H}{\partial x})\right^2 \right\|^{-2} & \quad \text{if} \quad H(x,p) \neq H_r \\
-\left\| \left(\frac{\partial H}{\partial p})\right^2 + \left(\frac{\partial H}{\partial x})\right^2  \right\|^{-1/2} & \quad \text{if} \quad H(x,p) = H_r \\
+\left\| \left(\frac{\partial H}{\partial p}\right)^2 + \left(\frac{\partial H}{\partial x}\right)^2 \right\|^{-2}, &\text{if $H(x,p) \neq H_r$} \\
+\left\| \left(\frac{\partial H}{\partial p}\right)^2 + \left(\frac{\partial H}{\partial x}\right)^2  \right\|^{-1/2}, & \text{if $H(x,p) = H_r$} 
 \end{cases}
 \end{aligned} %]]></script>
 
 <p>The idea of the function $f$ is to force the trajectory to land on the $H_r$ if the trajectory deviates from the level curve. When we reach a point $(x_k, p_k)$ with $H(x_k, p_k) = H_r$, then we reached the level curve, and the second term of the right hand side in Hamilton’s equation becomes zero. As a result, the solution of the Hamilton’s equation would remain on the level curve.</p>
 
 <h3 id="4th-step">$4^{th}$ step</h3>
-<p>With the level curve $\mathcal{S}_i$ computed, we move onto the fourth step where for all other data point in $\mathcal{P}$ we check if they are inside the curve $\mathcal{S}_i$ or not and that is done by checking if the winding number $\omega(x_j, C_i)$, for $j= i+1, \dots, N$ defined by the integral along the curve $\mathcal{C}_j$. Mathematically that is</p>
+<p>With the level curve $\mathcal{S}_i$ computed, we move onto the fourth step where for all other data point in $\mathcal{P}$ we check if they are inside the curve $\mathcal{S}_i$ or not and that is done by checking if the winding number $\omega(x_j, \mathcal{C}_i)$, for $j= i+1, \dots, N$ defined by the integral along the curve $\mathcal{C}_j$. Mathematically that is</p>
 
 <script type="math/tex; mode=display">\begin{aligned} \label{eq:winding_num}
 \omega( \mathbf{x}_i, \mathcal{C}_j) =  \oint_{\mathcal{C}_j} \frac{-(y - x_{2,k})dx + (x -x_{1,k} )dy}{(x -x_{1,k} )^2 + (y - x_{2,k})^2 }
 \end{aligned}</script>
 
-<p>is a positive number. In simple terms, the winding number gives the number of times a closed curve would wind around a point inside of it. For this algorithm, a positive winding number would indicate that a data point belongs to a set. When the winding number $\omega(x_j, C_i) &gt; 1$, we remove the point $(x_j, p_j)$ from the set $\mathcal{P}$.</p>
+<p>is a positive number. In simple terms, the winding number gives the number of times a closed curve would wind around a point inside of it. For this algorithm, a positive winding number would indicate that a data point belongs to a set. When the winding number $\omega(x_j, \mathcal{C}_i) &gt; 1$, we remove the point $(x_j, p_j)$ from the set $\mathcal{P}$.</p>
 
 <p>We repeat steps 3 and 4 until $\mathcal{P}$ becomes an empty set. The result of this algorithm is a cluster groups defined by level curves $\mathcal{S}_k$, for $k = 1, \dots , M$, where $M$ is the number of cluster sets.</p>
 
@@ -193,7 +193,7 @@ f(x,p) = \begin{cases}
 
 <p><img src="three_spirals_01.png" alt="" /></p>
 
-<p>The third example is an extension of the second one and it consists of clustering a spiral on a sphere. This uses a modification to the Hamiltonian and Hamilton’s equation, making use of the Hamiltonian’s symmetry. The result of such algorithm can be seen in Figure 3.</p>
+<p>The third example is an extension of the second one and it consists of clustering a spiral on a sphere. This uses a modification to the Hamiltonian and Hamilton’s equation, making use of the Hamiltonian’s symmetry. The result of such algorithm can be seen in the following figure</p>
 
 <p><img src="spiral_test.png" alt="" /></p>
 
@@ -203,11 +203,10 @@ f(x,p) = \begin{cases}
 <div id="PredChaos" />
 
 <h1 id="predicting-chaos">Predicting Chaos</h1>
-<p>These are my notes on <strong>echo state machines</strong> and their application in predicting chaotic systems. This is basically me trying to understand the following paper <a href="#doi:10.1063/1.5010300">(Pathak, Lu, Hunt, Girvan, &amp; Ott, 2017)</a></p>
 
-<p>Despite the recent success of some artificial neural network architectures, like multilayer perceptron and convolutional neural networks, in pattern recognition applications, such network architectures are suitable for time-invariant problems. However, many real-world problems are time variables, like weather forecast, financial assets and other dynamical systems. To model such data, one needs to use a different architecture; namely, adding a recurrent connection to the node of the feed-forward neural network resulting in a more powerful type network architecture known as recurrent neural network, or RNN for short. RNN’s have garnered much attention from the machine learning community due to their potential modelling complex time-dependant systems. However, that comes at a price, as training is computationally taxing and slow. Moreover, plain RNN’s cause their error gradient to vanish, which further complicates training.</p>
+<p>Despite the recent success of some artificial neural network architectures, like multilayer perceptron and convolutional neural networks, in pattern recognition applications, such network architectures are suitable for time-invariant problems. However, many real-world systems change with time, like weather forecast, financial assets and other dynamical systems. To model such data, one needs to use a different architecture; namely, adding a recurrent connection to the node of the feed-forward neural network resulting in a more powerful type network architecture known as recurrent neural network, or RNN for short. RNN’s have garnered much attention from the machine learning community due to their potential modelling complex time-dependant systems. However, that comes at a price, as training is computationally taxing and slow. Moreover, plain RNN’s cause their error gradient to vanish, which further complicates training. These are my notes on <strong>echo state machines</strong> and their application in predicting chaotic systems. This is basically me trying to understand the following paper <a href="#doi:10.1063/1.5010300">(Pathak, Lu, Hunt, Girvan, &amp; Ott, 2017)</a></p>
 
-<p>One possible solution to such problem was proposed by Jaeger as Echo State Network <a href="#jaeger2004harnessing">(Jaeger &amp; Haas, 2004)</a>. It happened that Maass, independently, proposed his version of the solution known as Liquid State Machine <a href="#doi:10.1162/089976602760407955">(Maass, Natschläger, &amp; Markram, 2002)</a>. The fundamental idea is to construct an RNN with random and sparse recurrent connections, i.e. not all states connected recurrently. The output of the network is, essentially, a combination of states of the RNN. Basically, fix an RNN for the whole process and such RNN’s are called <strong>reservoirs</strong>. We are then left with only the weights of the output layer that need training, which drastically reduces the effort and time needed to train the whole network. Moreover, one can use on-shot training. The RNN is then is fed an $M$ dimensional time-series as input, and as a result, the states become dependant on the input time series and its value at previous time, hence the “echo”. The ability to remember the input signal allows the network to predict what will come next.</p>
+<p>One possible solution to such problem was proposed by Jaeger as Echo State Network <a href="#jaeger2004harnessing">(Jaeger &amp; Haas, 2004)</a>. It happened that Maass, independently, proposed his version of the solution known as Liquid State Machine <a href="#doi:10.1162/089976602760407955">(Maass, Natschläger, &amp; Markram, 2002)</a>. The fundamental idea is to construct an RNN with random and sparse recurrent connections, i.e. not all states are connected to each other. The output of the network is, essentially, a combination of states of the RNN. Basically, fix an RNN for the whole process and such RNN’s are called <strong>reservoirs</strong>. We are then left with only the weights of the output layer that need training, which drastically reduces the effort and time needed to train the whole network. Moreover, one can use on-shot training. The RNN is then is fed an $M$ dimensional time-series as input, and as a result, the states become dependant on the input time series and its value at previous time, hence the “echo”. The ability to remember the input signal allows the network to predict what will come next.</p>
 
 <table>
   <thead>
@@ -225,21 +224,21 @@ f(x,p) = \begin{cases}
 <div id="MathDesc" />
 
 <h2 id="mathematical-description">Mathematical Description</h2>
-<p>Since the network’s states depend on time, the reservoir is in essence a complex dynamical system. Moreover, the state of the reservoir, $r$, depends not only on the state of the previous time-step, but also on an external input. Mathematically, the state, $r$, is an $N$ dimensional vector with each element $r_i$ is the state of the $i^{th}$ reservoir node.</p>
+<p>Since the network’s states depend on time, the reservoir is in essence a complex dynamical system. Moreover, the state of the reservoir, $\mathbf{r}$, depends not only on the state of the previous time-step, but also on an external input. Mathematically, the state, $\mathbf{r}$, is an $N$ dimensional vector with each element $r_i$ is the state of the $i^{th}$ reservoir node.</p>
 
-<p>The external input, $u$ represented by an $M$ dimensional vector, is coupled to the reservoir by an $N\times M$ matrix $\mathbf{W}_i$,  which does not have to be time-dependant. The discrete-time dynamical system is described by</p>
+<p>The external input, $\mathbf{u}$ represented by an $M$ dimensional vector, is coupled to the reservoir by an $N\times M$ matrix $\mathbf{W}_i$,  which does not have to be time-dependant. The discrete-time dynamical system is described by</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{aligned}
 \mathbf{r}(t + \Delta t) &= (1 - \alpha)\mathbf{r}(t) + \alpha \mathrm{tanh} \left( \mathbf{A} \mathbf{r}(t) + \mathbf{W}_i \mathbf{u}(t)  \right) \\
-\mathbf{v}(t + \Delta t) &= \mathbf{W}_o \left( \mathbf{r}(t + \Delta t), \mathbf{P} \right).
+\mathbf{v}(t + \Delta t) &= \mathbf{W}_o \left( \mathbf{r}(t + \Delta t)\right).
 \end{aligned} %]]></script>
 
-<p>The matrix $A$ was alluded to earlier and it is the adjacency matrix, which describes the connection amongst reservoir nodes. The matrix $A$ is a square $N \times N$ symmetric matrix. The $M_1$ dimensional vector $v$ is the output vector and the matrix $\mathbf{W}_o$ is a  $M_1 \times N$ matrix that maps $N$ dimensional reservoir states and maps them to the output. In other words, each output element is a combination of reservoir states. (It depends on $P$, which we can adjust).</p>
+<p>The matrix $\mathbf{A}$ was alluded to earlier and it is the <strong>adjacency matrix</strong>, which describes the connection amongst reservoir states. The matrix $\mathbf{A}$ is a square $N \times N$ symmetric matrix. The $M_1$ dimensional vector $\mathbf{v}$ is the output vector and the matrix $\mathbf{W}_o$ is a  $M_1 \times N$ matrix that maps $N$ dimensional reservoir states and maps them to the output. In other words, each output element is a combination of reservoir states.</p>
 
 <p>The scalar $\alpha$ is the leaking rate, that ranges between $(0, 1]$ and its job here is to control the speed at which the reservoir state is updated.</p>
 
-<p>At first glance it looks that this architecture has only one tunable parameter, $\alpha$, but in fact there are other parameters. The non-direct parameters are: size of the reservoir $N$, spectral radius of $A$ and its sparsity. The role of the parameters and general strategies of selecting them will be described in <a href="#param">parameter tuning</a> section.</p>
+<p>At first glance it looks that this architecture has only one tuneable parameter, $\alpha$, but in fact there are other parameters. The non-direct parameters are: size of the reservoir $N$, spectral radius of $\mathbf{A}$ and its sparsity. The role of the parameters and general strategies of selecting them will be described in <a href="#param">parameter tuning</a> section.</p>
 
 <div id="training" />
 
@@ -247,49 +246,49 @@ f(x,p) = \begin{cases}
 <p>Training an ESN, unlike a typical RNN, is very straight forward. In essence, training is a minimisation problem, where we specify a cost functional to quantify how far off the network’s output is from the desired target. For example, if the error functional is chosen as</p>
 
 <script type="math/tex; mode=display">\begin{aligned}
-J(v) = \| v - v_t \|^2,
+J(v) = \| \mathbf{v} - \mathbf{v}_t \|^2,
 \end{aligned}</script>
 
-<p>then if our network yields the output $v$, we need to know by how much we need to change it to minimise $J(v)$. This amount is given by the gradient of $J(v)$, denoted by $\nabla J$, in turn, it is a vector whose elements are the partial derivatives of $J$ with respect to individual elements of $v$, i.e. $\nabla J = (\frac{\partial J}{\partial v_1}, \dots)$. First, what we mean by gradient, it is the rate of change of the error when taking a specific direction. You can think of it in terms of mountain climbing, the higher the value of the gradient, the steeper the path is and harder to climb, and the lower the value the easier it is to climb. Then if we evaluate $\tilde v = v - \nabla J$, then we are guaranteed that $J(v) &gt; J(\tilde v)$.</p>
+<p>then if our network yields the output $\mathbf{v}$, we need to know by how much we need to change it to minimise $J(\mathbf{v})$. This amount is given by the gradient of $J(\mathbf{v})$, denoted by $\nabla J$, in turn, it is a vector whose elements are the partial derivatives of $J$ with respect to individual elements of $\mathbf{v}$, i.e. $\nabla J = (\frac{\partial J}{\partial v_1}, \dots)$. First, what we mean by gradient, it is the rate of change of the error when taking a specific direction. You can think of it in terms of mountain climbing, the higher the value of the gradient, the steeper the path is and harder to climb, and the lower the value the easier it is to climb. Then if we evaluate $ \mathbf{\tilde v} = \mathbf{v} - \nabla J $, then we are guaranteed that $J(\mathbf{v}) &gt; J(\mathbf{\tilde v})$.</p>
 
-<p>For RNN’s, training is done using back-propagation, which is going over the neural network from the output to the input to compute the partial derivatives of the error function. Partial derivatives are needed to adjust the weights of an RNN to yield the desired input-output pair. The issue with back-propagation for RNN’s is the manifestation of many issues like the vanishing gradients. In terms of our previous small example, this means $\tilde v \approx v$ and the improvement is very slow.</p>
+<p>For RNN’s, training is done using back-propagation, which is going over the neural network from the output to the input to compute the partial derivatives of the error function. Partial derivatives are needed to adjust the weights of an RNN to yield the desired input-output pair. The issue with back-propagation for RNN’s is the manifestation of many issues like the vanishing gradients. In terms of our previous small example, this means $ \mathbf{\tilde v} \approx \mathbf{v}$ and the improvement is very slow.</p>
 
 <p>On the other hand, RNN can have very large gradients, which, depending on the error function, can cause the gradient update step to miss the local minimum,  thus renders training very inefficient.</p>
 
 <p>These problems motivated the introduction of ESN, as it can avoid back-propagation altogether, thanks to the fact that the weights of the input layer and the hidden-to-hidden connections are chosen randomly and fixed.  Hence we are left with the weights of the reservoir to the output layer, and as a result,  the training turns into a regression problem, which can be solved analytically allowing for a one-shot training.</p>
 
-<p>For this architecture, the training is a supervised learning problem, where we seek to make the output $v(t)$, such that it approximates $V_d(t)$ when fed the input signal $u(t)$. Training is done by feeding the ESN an input signal and computing the value of the reservoir state, using dynamical system. From there, the output $v$ is computed using the reservoir-to-output map $\mathbf{W}_o (r, P)$. Then the task is to find a parameter $P$ such that the error functional</p>
+<p>For this architecture, the training is a supervised learning problem, where we seek to make the output $\mathbf{v}(t)$, such that it approximates $\mathbf{v}_d(t)$ when fed the input signal $\mathbf{u}(t)$. Training is done by feeding the ESN an input signal and computing the value of the reservoir state, using dynamical system. From there, the output $\mathbf{v}$ is computed using the reservoir-to-output map $\mathbf{W}_o (\mathbf{r})$. Then the task is to find the elements of the matrix $\mathbf{W}_o$ such that the error functional</p>
 
 <script type="math/tex; mode=display">\begin{aligned}
-J(v) = \sum_{t=-T}^0 \| \mathbf{W}_o(r, P) - v_d(t) \|^2 + \beta \| P \|^2
+J(\mathbf{v}) = \sum_{t=-T}^0 \| \mathbf{W}_o(r) - \mathbf{v}_d(t) \|^2 + \beta \| \mathbf{W}_o \|^2
 \end{aligned}</script>
 
-<p>is minimised. The term $\beta | P |^2$ is added to the error functional to regularise the regression problem, such regularisation is known as Tikhonov regularisation. The constant $\beta &gt; 0$ task is to prevent over-fitting. Furthermore, this term prevents P from having large values, which causes slight perturbations in value of the reservoir states to be amplified. This is problematic in the case when the input signal $u$ is a feedback signal, it takes the output of the previous step as an input.</p>
+<p>is at a minimum. The term $\beta | \mathbf{W}_o |^2$ is added to the error functional to regularise the regression problem, such regularisation is known as Tikhonov regularisation. The constant $\beta &gt; 0$ task is to prevent over-fitting. Furthermore, this term prevents P from having large values, which causes slight perturbations in value of the reservoir states to be amplified. This is problematic in the case when the input signal $\mathbf{u}$ is a feedback signal, it takes the output of the previous step as an input.</p>
 
 <p>The regression problem can be written in matrix form as</p>
 
 <script type="math/tex; mode=display">\begin{aligned}
-J(v) = (\mathbf{W}_o X - V_d)^2 + \beta \|\mathbf{W}_o \|^2
+J(\mathbf{v}) = (\mathbf{W}_o \mathbf{X} - \mathbf{v}_d)^2 + \beta \|\mathbf{W}_o \|^2
 \end{aligned}</script>
 
-<p>where $X$ is a $(1 + M + N) \times N_t$ matrix and $V_d$ is a $M_1 \times T$ matrix. To find $\mathbf{W}_o$ that yields the local minimum for $J$, we use the key fact from calculus that a function is at the local extremum when the gradient vanishes. Hence, we take the derivative of $J$ with respect to$ \mathbf{W}_o $and set it equal to zero and in doing so, we obtain an expression for $\mathbf{W}_o$ given by</p>
+<p>where $\mathbf{X}$ is a $(1 + M + N) \times N_t$ matrix and $\mathbf{v}_d$ is a $M_1 \times T$ matrix. To find $\mathbf{W}_o$ that yields the local minimum for $J$, we use the key fact from calculus that a function is at the local extremum when the gradient vanishes. Hence, we take the derivative of $J$ with respect to$ \mathbf{W}_o $and set it equal to zero and in doing so, we obtain an expression for $\mathbf{W}_o$ given by</p>
 
 <script type="math/tex; mode=display">\begin{aligned}
-\mathbf{W}_o = (Y)X (X X^T + \beta I)^{-1},
+\mathbf{W}_o = \mathbf{Y}\mathbf{X} (\mathbf{X} \mathbf{X}^T + \beta I)^{-1},
 \end{aligned}</script>
 
-<p>Here we can clearly see the role the parameter $\beta$ plays. In its absence, all we have to do is invert $XX^T$, however, it is not always ensured that is invertible, or if so, it might susceptible to numerical instabilities. Thus, $\beta$ here plays the role of making $XX^T$ nicer to invert.</p>
+<p>Here we can clearly see the role the parameter $\beta$ plays. In its absence, all we have to do is invert $\mathbf{X} \mathbf{X}^T$, however, it is not always ensured that is invertible, or if so, it might susceptible to numerical instabilities. Thus, $\beta$ here plays the role of making $\mathbf{X} \mathbf{X}^T$ nicer to invert.</p>
 
 <div id="param" />
 
 <h3 id="parameter-tuning">Parameter Tuning</h3>
-<p>In this section, we discuss the role of an echo state network’s parameter on its behaviour. As mentioned previously, the parameters of the ESN are: size of the reservoir, the sparsity of the adjacency matrix $A$, the spectral radius of $A$, denoted by $ \rho$, leaking rate and the scaling of $\mathbf{W}_i$.</p>
+<p>In this section, we discuss the role of an echo state network’s parameter on its behaviour. As mentioned previously, the parameters of the ESN are: size of the reservoir, the sparsity of the adjacency matrix $\mathbf{A}$, the spectral radius of $\mathbf{A}$, denoted by $ \rho$, leaking rate and the scaling of $\mathbf{W}_i$.</p>
 
 <p>The size of the reservoir plays an important role in influencing performance of ESN. Due to its computational simplicity compared to other architectures, the reservoir size can be chosen to be very large. One advantage of using a large reservoir size is that it reduces the difficulty of finding a combination of reservoir outputs that approximates the desired signal. There is no exact science in finding the perfect size, however, one must choose a size that is at least bigger than the length (number of time steps) of the input that needs to be kept in memory. Another strategy is to tune a small ESN network and then increase the size of the reservoir.</p>
 
-<p>Another parameter that can be tuned is the sparsity of matrices $A$ and $\mathbf{W}_i$. A sparse matrix has a very small percentage non-zero elements to total number of elements. This particular parameter does affect the performance of the network, as it makes information stay in one part of the reservoir without it propagating to other parts. As it is sparse, there are many options to choose in terms of distribution of non-zero elements. For example, a symmetric shape based on Erdős–Rényi model is the one chosen for part III of this series.</p>
+<p>Another parameter that can be tuned is the sparsity of matrices $\mathbf{A}$ and $\mathbf{W}_i$. A sparse matrix has a very small percentage non-zero elements to total number of elements. This particular parameter does affect the performance of the network, as it makes information stay in one part of the reservoir without it propagating to other parts. As it is sparse, there are many options to choose in terms of distribution of non-zero elements. For example, a symmetric shape based on Erdős–Rényi model is the one chosen for the examples <a href="#ESNExample">in the following section</a>.</p>
 
-<p>One of the most performances affecting parameters is the spectral radius, $ \rho$, of the adjacency matrix $A$. The spectral radius is the absolute value of the largest eigenvalue of the matrix $A$. This parameter is an indicator of the network having the so-called <strong>echo state property</strong>. This property indicates whether the asymptotic state of the system would echo the inputs.  It was shown that having a spectral radius of less than unity, in some cases, guarantees echo state property. However, such is , and was that a can an state property with a spectral radius larger than one. Nonetheless, a very good strategy is to start with a spectral radius set to unity and then tune it. Also, the nature of the problem dictates the value of the spectral radius, where it is advised to use a $ \rho &gt; 1$ for problems that require memory of the input and vice-versa.</p>
+<p>One of the most performances affecting parameters is the spectral radius, $ \rho$, of the adjacency matrix $\mathbf{A}$. The spectral radius is the absolute value of the largest eigenvalue of the matrix $\mathbf{A}$. This parameter is an indicator of the network having the so-called <strong>echo state property</strong>. This property indicates whether the asymptotic state of the system would echo the inputs.  It was shown that having a spectral radius of less than unity, in some cases, guarantees the echo state property. However, such restriction is not a sufficient condition. More studies on this issue were carried in papers such as (missing reference). Nonetheless, a very good strategy is to start with a spectral radius set to unity and then tune it. Also, the nature of the problem dictates the value of the spectral radius, where it is advised to use a $ \rho &gt; 1$ for problems that require memory of the input and vice-versa.</p>
 
 <p>The final parameter is the leaking rate $\alpha$, which is the rate at which the reservoir nodes are updated. It can be viewed as the time between two successive time steps. Or in terms of the input and output signal, it is the sampling rate.</p>
 
@@ -332,7 +331,7 @@ J(v) = (\mathbf{W}_o X - V_d)^2 + \beta \|\mathbf{W}_o \|^2
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center"><em>Trajectory of the Lorenz 63 system</em></td>
+      <td style="text-align: center"><em>Trajectory of the Lorenz 63 system, which are the famous Lorenz’s strange attractor.</em></td>
     </tr>
   </tbody>
 </table>
@@ -363,9 +362,9 @@ J(v) = (\mathbf{W}_o X - V_d)^2 + \beta \|\mathbf{W}_o \|^2
 
 <p>with $a= 10$, $b= 28$, and $c = 8/3$. If you’re curious, $x$ corresponds to intensity of convection, $y$ temperature difference in the horizontal plane, and $z$ is the temperature difference in the vertical plane.</p>
 
-<p>Now, we consider the vector ($u = (x,y,z)$) to be the input signal to the ESN. For the time being, we generate a Lorenz signal for $T = 20$, with $dt = 0.005$. We treat $u$ from $-40$ to $0$ to be the the training signal. The parameters of the ESN are chosen as such $N_r = 500$, with the learning rate $\alpha = 1.0$, the spectral radius $\rho = 0.6$, and the initial condition for weights of the hidden-to-hidden layer are an Erdős–Rényi matrix with degree $D = 6$.</p>
+<p>Now, we consider the vector $u = (x,y,z)$ to be the input signal to the ESN. For the time being, we generate a Lorenz signal for $T = 20$, with $dt = 0.005$. We treat $\mathbf{u}$ from $-40$ to $0$ to be the the training signal. The parameters of the ESN are chosen as such $N_r = 500$, with the learning rate $\alpha = 1.0$, the spectral radius $\rho = 0.6$, and the initial condition for weights of the hidden-to-hidden layer are an Erdős–Rényi matrix with degree $D = 6$.</p>
 
-<p>At $T=0$, instead of feeding the ESN the input signal $u$, we use its output as a feedback. That is $u = y$. This way, the ESN starts producing the prediction. We let the ESN run until $T= 20$. Using the output of the ESN and the $u[3000: 5000]$, we compare both signals.</p>
+<p>At $T=0$, instead of feeding the ESN the input signal $\mathbf{u}$, we use its output as a feedback. That is $u = y$. This way, the ESN starts producing the prediction. We let the ESN run until $T= 20$. Using the output of the ESN and the $u[3000: 5000]$, we compare both signals.</p>
 
 <table>
   <thead>
@@ -388,7 +387,7 @@ J(v) = (\mathbf{W}_o X - V_d)^2 + \beta \|\mathbf{W}_o \|^2
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center"><em>3D plot of the trajectory obtained by the echo state network</em></td>
+      <td style="text-align: center"><em>Lorenz’s strange attractor generated by the echo state network.</em></td>
     </tr>
   </tbody>
 </table>
@@ -406,7 +405,7 @@ J(v) = (\mathbf{W}_o X - V_d)^2 + \beta \|\mathbf{W}_o \|^2
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center"><em>Trajectory of the Rössler Attractor.</em></td>
+      <td style="text-align: center"><em>The Rössler Attractor exhibiting one spiral.</em></td>
     </tr>
   </tbody>
 </table>
@@ -464,11 +463,9 @@ J(v) = (\mathbf{W}_o X - V_d)^2 + \beta \|\mathbf{W}_o \|^2
 <div id="KS" />
 
 <h2 id="kuramoto-sivashinsky-equation">Kuramoto-Sivashinsky Equation</h2>
-<p>Thus far we have mentioned 2-D and 3-D dimensional chaotic systems, and in fact there exists a infinite-dimensional systems <a href="#10.1143/PTPS.64.346">(Kuramoto, 1978)</a> and <a href="#ashinsky1988nonlinear">(Sivashinsky, 1977)</a>. Before we continue, first, I need to clarify by what I mean by finite and infinite-dimensional systems. For finite-dimensional systems, the solution is described as a combination of a finite number of basis functions. For example, the Lorenz system’s solution written as $u =(x, y,z) $is described in terms of quantities along each axis. On the other hand, infinite dimensional solutions are solutions that are described in terms of an infinite sum of basis functions.</p>
+<p>Thus far we have mentioned 2-D and 3-D dimensional chaotic systems, and in fact there exists an infinite-dimensional systems <a href="#10.1143/PTPS.64.346">(Kuramoto, 1978)</a> and <a href="#ashinsky1988nonlinear">(Sivashinsky, 1977)</a>. Before we continue, first, I need to clarify by what I mean by finite and infinite-dimensional systems. For finite-dimensional systems, the solution is described as a combination of a finite number of basis functions. For example, the Lorenz system’s solution written as $u =(x, y, z) $is described in terms of quantities along each axis. On the other hand, infinite-dimensional solutions are solutions that are described in terms of an infinite sum of basis functions.</p>
 
-<p>In the previous examples, the systems’ solutions are all parametrised by time $t$ and the evolution equations are ordinary differential equations. However, many real world physics, dynamics depends not only on the rate of change of with respect to $t$, but also with the rate of change with respect to other independent quantities, e.g. space. Such systems are governed by partial differential equations.</p>
-
-<p>An example of a chaotic infinite-dimensional systems is the Kuramoto-Sivashinsky equation</p>
+<p>In the previous examples, the systems’ solutions are all parametrised by time $t$ and the evolution equations are ordinary differential equations. However, many real world physics, dynamics depends not only on the rate of change with respect to $t$, but also with the rate of change with respect to other independent quantities, e.g. space. Such systems are governed by partial differential equations. An example of a chaotic infinite-dimensional systems is the Kuramoto-Sivashinsky equation:</p>
 
 <script type="math/tex; mode=display">\begin{aligned}
 \partial_t v - \frac{1}{2} (\partial_x v)^2 = - \partial_{xx} v - \partial_{xxxx}v
@@ -489,9 +486,9 @@ J(v) = (\mathbf{W}_o X - V_d)^2 + \beta \|\mathbf{W}_o \|^2
   </tbody>
 </table>
 
-<p>One of the most interesting features of this system is that when $t \to \infty$ the solution, from any initial condition, is attracted to a space known as the \textbf{inertial manifold}. What’s interesting about the inertial manifold is that it is finite dimensional, which tells us that the solution of the KS as $t \to \infty$ is equivalent to that of a finite dimensional system.</p>
+<p>One of the most interesting features of this system is that when $t \to \infty$ the solution, from any initial condition, is attracted to a space known as the <strong>inertial manifold</strong>. What’s interesting about the inertial manifold is that it is finite dimensional, which tells us that the solution of the KS as $t \to \infty$ is equivalent to that of a finite dimensional system.</p>
 
-<p>For our prediction, the KS equation is discretised in space as, the solution is now a vector in $\mathbb{R}^N$ where we chose $N = 128$ and (parameters)</p>
+<p>Like other chaotic systems, the Kuramoto-Sivashinsky equation can be predicted using echo state networks as done in <a href="#doi:10.1063/1.5010300">(Pathak, Lu, Hunt, Girvan, &amp; Ott, 2017)</a> and <a href="#doi:10.1063/1.5028373">(Pathak et al., 2018)</a>. First, to be able to feed it into the ESN, one needs to discretise the equation in space as, the solution is now a vector in $\mathbb{R}^N$. In some way, the discretisation in space approximate the infinite-dimensional system to a finite-dimensional with $N$ dimensions.</p>
 
 <table>
   <thead>
@@ -501,7 +498,7 @@ J(v) = (\mathbf{W}_o X - V_d)^2 + \beta \|\mathbf{W}_o \|^2
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center"><em>The sample solution of Kuramoto-Sivashinsky equation</em></td>
+      <td style="text-align: center"><em>The sample prediction of Kuramoto-Sivashinsky equation using echo state networks.</em></td>
     </tr>
   </tbody>
 </table>
