@@ -11,11 +11,9 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="This is mini-website of a project that I am working on that deals with topics in data science from the point of view of dynamical systems." />
 <meta property="og:description" content="This is mini-website of a project that I am working on that deals with topics in data science from the point of view of dynamical systems." />
-<link rel="canonical" href="http://localhost:4000/" />
-<meta property="og:url" content="http://localhost:4000/" />
 <meta property="og:site_name" content="Data Science &amp; Some Mechanics" />
 <script type="application/ld+json">
-{"description":"This is mini-website of a project that I am working on that deals with topics in data science from the point of view of dynamical systems.","name":"Data Science &amp; Some Mechanics","headline":"Data Science &amp; Some Mechanics","url":"http://localhost:4000/","@type":"WebSite","@context":"http://schema.org"}</script>
+{"headline":"Data Science &amp; Some Mechanics","description":"This is mini-website of a project that I am working on that deals with topics in data science from the point of view of dynamical systems.","name":"Data Science &amp; Some Mechanics","@type":"WebSite","url":"/","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -81,7 +79,7 @@
   </li>
   <li><a href="#PredChaos">Predicting Chaos</a>
     <ol>
-      <li><a href="#EchoDesc">Echo State Machines</a>
+      <li><a href="#EchoDesc">Reservoir Computing</a>
         <ol>
           <li><a href="#MathDesc">Mathematical Description</a></li>
           <li><a href="#training">Training</a></li>
@@ -213,15 +211,15 @@ f(x,p) = \begin{cases}
 
 <p>But what does that have to do with machine learning? There are many phenomena in physics where a slight perturbation in the starting position can cause a massive change in the outcome, hence such phenomena are to be chaotic. Such phenomena are difficult to model and predict, so naturally researches in the fields of mathematics and machine learning would focus their attention to developing systems to model them. There has been, recently, some encouraging results using state-of-the-art schemes to predict chaotic systems, such as the results of <a href="#doi:10.1063/1.5010300">(Pathak, Lu, Hunt, Girvan, &amp; Ott, 2017)</a>.</p>
 
-<p>In this post, I will give an overview of the basic concepts and tools used to model and predict chaotic systems. The main ingredient used is the so-called <strong>echo state machine</strong>, which can be viewed as a variant of recurrent neural networks.</p>
+<p>In this post, I will give an overview of the basic concepts and tools used to model and predict chaotic systems. The main ingredient used is the so-called <strong>reservoir computing</strong>, which can be viewed as a variant of recurrent neural networks.</p>
 
 <div id="EchoDesc" />
 
-<h2 id="echo-state-machines">Echo State Machines</h2>
+<h2 id="reservoir-computing">Reservoir Computing</h2>
 
 <p>Despite the recent success of some artificial neural network architectures, like multilayer perceptron and convolutional neural networks, in pattern recognition applications, such network architectures are suitable for time-invariant problems. However, many real-world systems change with time, like weather forecast, financial assets and other dynamical systems. To model such data, one needs to use a different architecture; namely, adding a recurrent connection to the node of the feed-forward neural network resulting in a more powerful type network architecture known as recurrent neural network, or RNN for short. RNN’s have garnered much attention from the machine learning community due to their potential modelling complex time-dependant systems. However, that comes at a price, as training is computationally taxing and slow. Moreover, plain RNN’s cause their error gradient to vanish, which further complicates training.</p>
 
-<p>One possible solution to such problem was proposed by Jaeger as <strong>echo state network</strong> <a href="#jaeger2004harnessing">(Jaeger &amp; Haas, 2004)</a>. It happened that Maass, independently, proposed his version of the solution known as <strong>liquid state machine</strong>  <a href="#doi:10.1162/089976602760407955">(Maass, Natschläger, &amp; Markram, 2002)</a>. The fundamental idea is to construct an RNN with random and sparse recurrent connections, i.e. not all states are connected to each other. The output of the network is, essentially, a combination of states of the RNN. Basically, fix an RNN for the whole process and such RNN’s are called <strong>reservoirs</strong>. We are then left with only the weights of the output layer that need training, which drastically reduces the effort and time needed to train the whole network. Moreover, one can use on-shot training. The RNN is then is fed an $M$ dimensional time-series as input, and as a result, the states become dependant on the input time series and its value at previous time, hence the “echo”. The ability to remember the input signal allows the network to predict what will come next.</p>
+<p>One possible solution to such problem was proposed by Jaeger as <strong>echo state network</strong> <a href="#jaeger2004harnessing">(Jaeger &amp; Haas, 2004)</a>. It happened that Maass, independently, proposed his version of the solution known as <strong>liquid state machine</strong>  <a href="#doi:10.1162/089976602760407955">(Maass, Natschläger, &amp; Markram, 2002)</a>. Both are instances of reservoir computing. The fundamental idea is to construct an RNN with random and sparse recurrent connections, i.e. not all states are connected to each other. The output of the network is, essentially, a combination of states of the RNN. Basically, fix an RNN for the whole process and such RNN’s are called <strong>reservoirs</strong>. We are then left with only the weights of the output layer that need training, which drastically reduces the effort and time needed to train the whole network. Moreover, one can use on-shot training. The RNN is then is fed an $M$ dimensional time-series as input, and as a result, the states become dependant on the input time series and its value at previous time, hence the “echo”. The ability to remember the input signal allows the network to predict what will come next.</p>
 
 <table>
   <thead>
@@ -231,7 +229,7 @@ f(x,p) = \begin{cases}
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center"><em>A schematic representation an echo state network</em></td>
+      <td style="text-align: center"><em>A schematic description of reservoir computing.</em></td>
     </tr>
   </tbody>
 </table>
@@ -254,7 +252,7 @@ f(x,p) = \begin{cases}
 <div id="training" />
 
 <h3 id="training">Training</h3>
-<p>Training an ESN, unlike a typical RNN, is very straight forward. In essence, training is a minimisation problem, where we specify a cost functional to quantify how far off the network’s output is from the desired target. For example, if the error functional is chosen as</p>
+<p>Training an reservoirs, unlike a typical RNN, is very straight forward. In essence, training is a minimisation problem, where we specify a cost functional to quantify how far off the network’s output is from the desired target. For example, if the error functional is chosen as</p>
 
 <p><img src="/res/latex/latex-45aa753875994ff6c13ee372a775f255.png" /></p>
 
@@ -264,9 +262,9 @@ f(x,p) = \begin{cases}
 
 <p>On the other hand, RNN can have very large gradients, which, depending on the error function, can cause the gradient update step to miss the local minimum,  thus renders training very inefficient.</p>
 
-<p>These problems motivated the introduction of ESN, as it can avoid back-propagation altogether, thanks to the fact that the weights of the input layer and the hidden-to-hidden connections are chosen randomly and fixed.  Hence we are left with the weights of the reservoir to the output layer, and as a result,  the training turns into a regression problem, which can be solved analytically allowing for a one-shot training.</p>
+<p>These problems motivated the introduction of reservoir computing, as it can avoid back-propagation altogether, thanks to the fact that the weights of the input layer and the hidden-to-hidden connections are chosen randomly and fixed.  Hence we are left with the weights of the reservoir to the output layer, and as a result,  the training turns into a regression problem, which can be solved analytically allowing for a one-shot training.</p>
 
-<p>For this architecture, the training is a supervised learning problem, where we seek to make the output $\mathbf{v}(t)$, such that it approximates $\mathbf{v_o}(t)$ when fed the input signal $\mathbf{u}(t)$. Training is done by feeding the ESN an input signal and computing the value of the reservoir state, using dynamical system. From there, the output $\mathbf{v}$ is computed using the reservoir-to-output map $\mathbf{W_o} (\mathbf{r})$. Then the task is to find the elements of the matrix $\mathbf{W_o}$ such that the error functional</p>
+<p>For this architecture, the training is a supervised learning problem, where we seek to make the output $\mathbf{v}(t)$, such that it approximates $\mathbf{v_o}(t)$ when fed the input signal $\mathbf{u}(t)$. Training is done by feeding the reservoir an input signal and computing the value of the reservoir state, using dynamical system. From there, the output $\mathbf{v}$ is computed using the reservoir-to-output map $\mathbf{W_o} (\mathbf{r})$. Then the task is to find the elements of the matrix $\mathbf{W_o}$ such that the error functional</p>
 
 <p><img src="/res/latex/latex-97351cfd95384142f0b024efa971a641.png" /></p>
 
@@ -285,9 +283,9 @@ f(x,p) = \begin{cases}
 <div id="param" />
 
 <h3 id="parameter-tuning">Parameter Tuning</h3>
-<p>In this section, we discuss the role of an echo state network’s parameter on its behaviour. As mentioned previously, the parameters of the ESN are: size of the reservoir, the sparsity of the adjacency matrix $\mathbf{A}$, the spectral radius of $\mathbf{A}$, denoted by $ \rho$, leaking rate and the scaling of $\mathbf{W_i}$.</p>
+<p>In this section, we discuss the role of reservoir’s parameter on its behaviour. As mentioned previously, the parameters of the reservoir are: size of the reservoir, the sparsity of the adjacency matrix $\mathbf{A}$, the spectral radius of $\mathbf{A}$, denoted by $ \rho$, leaking rate and the scaling of $\mathbf{W_i}$.</p>
 
-<p>The size of the reservoir plays an important role in influencing performance of ESN. Due to its computational simplicity compared to other architectures, the reservoir size can be chosen to be very large. One advantage of using a large reservoir size is that it reduces the difficulty of finding a combination of reservoir outputs that approximates the desired signal. There is no exact science in finding the perfect size, however, one must choose a size that is at least bigger than the length (number of time steps) of the input that needs to be kept in memory. Another strategy is to tune a small ESN network and then increase the size of the reservoir.</p>
+<p>The size of the reservoir plays an important role in influencing performance of the reservoir. Due to its computational simplicity compared to other architectures, the reservoir size can be chosen to be very large. One advantage of using a large reservoir size is that it reduces the difficulty of finding a combination of reservoir outputs that approximates the desired signal. There is no exact science in finding the perfect size, however, one must choose a size that is at least bigger than the length (number of time steps) of the input that needs to be kept in memory. Another strategy is to tune a small reservoir network and then increase its size.</p>
 
 <p>Another parameter that can be tuned is the sparsity of matrices $\mathbf{A}$ and $\mathbf{W_i}$. A sparse matrix has a very small percentage non-zero elements to total number of elements. This particular parameter does affect the performance of the network, as it makes information stay in one part of the reservoir without it propagating to other parts. As it is sparse, there are many options to choose in terms of distribution of non-zero elements. For example, a symmetric shape based on Erdős–Rényi model is the one chosen for the examples <a href="#ESNExample">in the following section</a>.</p>
 
@@ -299,7 +297,7 @@ f(x,p) = \begin{cases}
 
 <h2 id="chaotic-systems">Chaotic Systems</h2>
 
-<p>Now let’s see how ESN can be used for short-time prediction of chaotic system. Again, as in the previous two parts, I will gloss over technical terms.The application of ESN in predicting chaotic systems was introduced in <a href="#jaeger2004harnessing">(Jaeger &amp; Haas, 2004)</a> and then extended in papers such as <a href="#doi:10.1063/1.5010300">(Pathak, Lu, Hunt, Girvan, &amp; Ott, 2017)</a> and <a href="#doi:10.1063/1.5028373">(Pathak et al., 2018)</a>. Recently, such networks were used to predict infinite dimensional chaotic systems, the Kuramoto-Sivashinsky equation in particular in <a href="#doi:10.1063/1.5010300">(Pathak, Lu, Hunt, Girvan, &amp; Ott, 2017)</a>.</p>
+<p>Now let’s see how reservoir computing can be used for short-time prediction of chaotic system. Again, as in the previous two parts, I will gloss over technical terms.The application of reservoir computing in predicting chaotic systems was introduced in <a href="#jaeger2004harnessing">(Jaeger &amp; Haas, 2004)</a> and then extended in papers such as <a href="#doi:10.1063/1.5010300">(Pathak, Lu, Hunt, Girvan, &amp; Ott, 2017)</a> and <a href="#doi:10.1063/1.5028373">(Pathak et al., 2018)</a>. Recently, such networks were used to predict infinite dimensional chaotic systems, the Kuramoto-Sivashinsky equation in particular in <a href="#doi:10.1063/1.5010300">(Pathak, Lu, Hunt, Girvan, &amp; Ott, 2017)</a>.</p>
 
 <p>First, I will go over the idea behind chaotic systems and what is meant by chaos. Consider a simple pendulum (which is an asymptotically stable system), if we release the bob from any location, it will eventually return to a resting position.</p>
 
@@ -354,9 +352,9 @@ f(x,p) = \begin{cases}
 
 <p>with $a= 10$, $b= 28$, and $c = 8/3$. If you’re curious, $x$ corresponds to intensity of convection, $y$ temperature difference in the horizontal plane, and $z$ is the temperature difference in the vertical plane.</p>
 
-<p>Now, we consider the vector $u = (x,y,z)$ to be the input signal to the ESN. For the time being, we generate a Lorenz signal for $T = 20$, with $dt = 0.005$. We treat $\mathbf{u}$ from $-40$ to $0$ to be the the training signal. The parameters of the ESN are chosen as such $N_r = 500$, with the learning rate $\alpha = 1.0$, the spectral radius $\rho = 0.6$, and the initial condition for weights of the hidden-to-hidden layer are an Erdős–Rényi matrix with degree $D = 6$.</p>
+<p>Now, we consider the vector $u = (x,y,z)$ to be the input signal to the reservoir. For the time being, we generate a Lorenz signal for $T = 20$, with $dt = 0.005$. We treat $\mathbf{u}$ from $-40$ to $0$ to be the the training signal. The parameters of the reservoir are chosen as such $N_r = 500$, with the learning rate $\alpha = 1.0$, the spectral radius $\rho = 0.6$, and the initial condition for weights of the hidden-to-hidden layer are an Erdős–Rényi matrix with degree $D = 6$.</p>
 
-<p>At $T=0$, instead of feeding the ESN the input signal $\mathbf{u}$, we use its output as a feedback. That is $u = y$. This way, the ESN starts producing the prediction. We let the ESN run until $T= 20$. Using the output of the ESN and the $u[3000: 5000]$, we compare both signals.</p>
+<p>At $T=0$, instead of feeding the reservoir the input signal $\mathbf{u}$, we use its output as a feedback. That is $u = y$. This way, the reservoir starts outputting the prediction. We let the reservoir run until $T= 20$. Using the output of the reservoir and the $u[3000: 5000]$, we compare both signals.</p>
 
 <table>
   <thead>
@@ -366,7 +364,7 @@ f(x,p) = \begin{cases}
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center"><em>The output of the echo state network (blue) compared to the real solution (orange) of the Lorenz 63 system.</em></td>
+      <td style="text-align: center"><em>The output of the reservoir (blue) compared to the real solution (orange) of the Lorenz 63 system.</em></td>
     </tr>
   </tbody>
 </table>
@@ -379,7 +377,7 @@ f(x,p) = \begin{cases}
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center"><em>Lorenz’s strange attractor generated by the echo state network.</em></td>
+      <td style="text-align: center"><em>Lorenz’s strange attractor generated by reservoir computing.</em></td>
     </tr>
   </tbody>
 </table>
@@ -406,7 +404,7 @@ f(x,p) = \begin{cases}
 
 <p><img src="/res/latex/latex-d06798fe0b17fb1c62c46e04cf752e65.png" /></p>
 
-<p>with $a = 0.2$, $b = 0.2$ and $c = 5.7$. The same procedure was carried out for the Rössler system as with the Lorenz system in constructing an ESN. The parameters for the this ESN are the same as for the one in used for Lorenz attractor in <a href="#lorenz">the previous example</a>, except the spectral radius $\rho = 1.05$. Surprisingly, the result of the prediction turned out to be much more accurate than the Lorenz system.</p>
+<p>with $a = 0.2$, $b = 0.2$ and $c = 5.7$. The same procedure was carried out for the Rössler system as with the Lorenz system in constructing a reservoir system. The parameters for the this reservoir are the same as for the one in used for Lorenz attractor in <a href="#lorenz">the previous example</a>, except the spectral radius $\rho = 1.05$. Surprisingly, the result of the prediction turned out to be much more accurate than the Lorenz system.</p>
 
 <table>
   <thead>
@@ -416,7 +414,7 @@ f(x,p) = \begin{cases}
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center"><em>The output of the echo state network (blue) compared to the real solution (orange) of the Rössler system.</em></td>
+      <td style="text-align: center"><em>The output of the reservoir (blue) compared to the real solution (orange) of the Rössler system.</em></td>
     </tr>
   </tbody>
 </table>
@@ -429,7 +427,7 @@ f(x,p) = \begin{cases}
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center"><em>Another plot of output of the echo state network in blue circles to simplify the comparison with the actual data.</em></td>
+      <td style="text-align: center"><em>Another plot of output of the reservoir in blue circles to simplify the comparison with the actual data.</em></td>
     </tr>
   </tbody>
 </table>
@@ -442,7 +440,7 @@ f(x,p) = \begin{cases}
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center"><em>The error between the output of the echo state network and the actual output of the Rössler system.</em></td>
+      <td style="text-align: center"><em>The error between the output of the reservoir and the actual output of the Rössler system.</em></td>
     </tr>
   </tbody>
 </table>
@@ -473,7 +471,7 @@ f(x,p) = \begin{cases}
 
 <p>One of the most interesting features of this system is that when $t \to \infty$ the solution, from any initial condition, is attracted to a space known as the <strong>inertial manifold</strong>. What’s interesting about the inertial manifold is that it is finite dimensional, which tells us that the solution of the KS as $t \to \infty$ is equivalent to that of a finite dimensional system.</p>
 
-<p>Like other chaotic systems, the Kuramoto-Sivashinsky equation can be predicted using echo state networks as done in <a href="#doi:10.1063/1.5010300">(Pathak, Lu, Hunt, Girvan, &amp; Ott, 2017)</a> and <a href="#doi:10.1063/1.5028373">(Pathak et al., 2018)</a>. First, to be able to feed it into the ESN, one needs to discretise the equation in space as, the solution is now a vector in $\mathbb{R}^N$. In some way, the discretisation in space approximate the infinite-dimensional system to a finite-dimensional with $N$ dimensions.</p>
+<p>Like other chaotic systems, the Kuramoto-Sivashinsky equation can be predicted using reservoir computing framework as done in <a href="#doi:10.1063/1.5010300">(Pathak, Lu, Hunt, Girvan, &amp; Ott, 2017)</a> and <a href="#doi:10.1063/1.5028373">(Pathak et al., 2018)</a>. First, to be able to feed it into the reservoir, one needs to discretise the equation in space as, the solution is now a vector in $\mathbb{R}^N$. In some way, the discretisation in space approximate the infinite-dimensional system to a finite-dimensional with $N$ dimensions.</p>
 
 <table>
   <thead>
@@ -483,7 +481,7 @@ f(x,p) = \begin{cases}
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center"><em>The sample prediction of Kuramoto-Sivashinsky equation using echo state networks.</em></td>
+      <td style="text-align: center"><em>The sample prediction of Kuramoto-Sivashinsky equation using reservoir computing.</em></td>
     </tr>
   </tbody>
 </table>
